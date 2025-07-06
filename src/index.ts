@@ -65,9 +65,17 @@ export function convert(tgs: Uint8Array, size = 512): string {
         for (const layer of json.layers) {
             if (layer.ks != null) {
                 if (layer.parent == null) {
-                    if (layer.ks?.p != null) layer.ks.p.k = layer.ks.p.k.map(v => scaleValue(v, scale));
-                    if (layer.ks?.s != null) layer.ks.s.k = layer.ks.s.k.map(v => scaleValue(v, scale));
-                    else layer.ks.s = { a: 0, k: [100 * scale, 100 * scale, 100 * scale] };
+                    if (layer.ks?.p?.k) {
+                        layer.ks.p.k = layer.ks.p.k.map(v => scaleValue(v, scale));
+                    }
+
+                    if (layer.ks?.s?.k) {
+                        layer.ks.s.k = layer.ks.s.k.map(v => scaleValue(v, scale));
+                    }
+
+                    else if (layer.ks && layer.ks.s === undefined) {
+                        layer.ks.s = { a: 0, k: [100 * scale, 100 * scale, 100 * scale] };
+                    }
                 }
             }
         }
