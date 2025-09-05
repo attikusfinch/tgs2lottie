@@ -26,7 +26,7 @@ import { convert } from './index';
     try {
         const p = path.parse(filepath as string);
         const tgs = fs.readFileSync(filepath as string);
-        const json = convert(tgs, size);
+        const json = convert(new Uint8Array(tgs), size);
 
         fs.writeFileSync(path.join(p.dir, p.name + '_' + size + '.json'), json);
     } catch (err) {
